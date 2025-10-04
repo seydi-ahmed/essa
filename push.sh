@@ -4,10 +4,7 @@
 if ! git diff-index --quiet HEAD --; then
     git add .
     git commit -m "
-        Reste:
-            - Super Admin doit modifier créer des Admins
-            - Super Admin doit créer des cours
-            - Admin doit GET api/progress
+        initialisation des dossiers/fichiers du backend
                     "
 fi
 

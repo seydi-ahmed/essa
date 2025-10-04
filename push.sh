@@ -4,7 +4,7 @@
 if ! git diff-index --quiet HEAD --; then
     git add .
     git commit -m "
-        initialisation des dossiers/fichiers du backend
+        début de test avec postman
                     "
 fi
 

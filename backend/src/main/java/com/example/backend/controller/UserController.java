@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.UserDashboardDto;
 import com.example.backend.dto.UserDto;
-import com.example.backend.entity.User;
 import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,16 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        UserDto userDto = userService.getUserByEmail(userDetails.getUsername());
+        String email = userDetails.getUsername();
+        UserDto userDto = userService.getUserByEmail(email);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<UserDashboardDto> getUserDashboard(@AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        UserDashboardDto dashboard = userService.getUserDashboard(email); // Utilisez l'email directement
+        return ResponseEntity.ok(dashboard);
     }
 
     @GetMapping
@@ -35,8 +43,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.updateUser(id, user));
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        // Vous devrez créer une méthode updateUser dans UserService
+        return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @DeleteMapping("/{id}")

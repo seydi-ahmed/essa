@@ -20,8 +20,8 @@ public class StoreController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<HardwareStore> createStore(@RequestBody HardwareStore store, 
-                                                   @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<HardwareStore> createStore(@RequestBody HardwareStore store,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long ownerId = getUserIdFromUserDetails(userDetails);
         HardwareStore createdStore = storeService.createStore(store, ownerId);
         return ResponseEntity.ok(createdStore);
@@ -56,9 +56,9 @@ public class StoreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HardwareStore> updateStore(@PathVariable Long id, 
-                                                   @RequestBody HardwareStore store,
-                                                   @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<HardwareStore> updateStore(@PathVariable Long id,
+            @RequestBody HardwareStore store,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long ownerId = getUserIdFromUserDetails(userDetails);
         HardwareStore updatedStore = storeService.updateStore(id, store, ownerId);
         return ResponseEntity.ok(updatedStore);
@@ -66,7 +66,7 @@ public class StoreController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStore(@PathVariable Long id,
-                                          @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long ownerId = getUserIdFromUserDetails(userDetails);
         storeService.deleteStore(id, ownerId);
         return ResponseEntity.ok().build();
@@ -76,7 +76,7 @@ public class StoreController {
     public ResponseEntity<List<HardwareStore>> searchStores(
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String name) {
-        
+
         if (city != null && !city.isEmpty()) {
             return ResponseEntity.ok(storeService.getStoresByCity(city));
         } else if (name != null && !name.isEmpty()) {
@@ -91,8 +91,9 @@ public class StoreController {
         if (userDetails == null) {
             throw new RuntimeException("User not authenticated");
         }
-        
+
         String email = userDetails.getUsername();
         return userService.getUserByEmail(email).getId();
     }
+
 }

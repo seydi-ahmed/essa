@@ -22,8 +22,8 @@ public class ProductController {
 
     @PostMapping("/store/{storeId}")
     public ResponseEntity<ProductDto> createProduct(@PathVariable Long storeId,
-                                                  @RequestBody Product product,
-                                                  @AuthenticationPrincipal UserDetails userDetails) {
+            @RequestBody Product product,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long ownerId = getUserIdFromUserDetails(userDetails);
         ProductDto createdProduct = productService.createProduct(product, storeId, ownerId);
         return ResponseEntity.ok(createdProduct);
@@ -67,8 +67,8 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id,
-                                                  @RequestBody Product product,
-                                                  @AuthenticationPrincipal UserDetails userDetails) {
+            @RequestBody Product product,
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long ownerId = getUserIdFromUserDetails(userDetails);
         ProductDto updatedProduct = productService.updateProduct(id, product, ownerId);
         return ResponseEntity.ok(updatedProduct);
@@ -76,7 +76,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id,
-                                            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) {
         Long ownerId = getUserIdFromUserDetails(userDetails);
         productService.deleteProduct(id, ownerId);
         return ResponseEntity.ok().build();
@@ -87,7 +87,7 @@ public class ProductController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String city) {
-        
+
         if (name != null && !name.isEmpty()) {
             return ResponseEntity.ok(productService.searchProductsByName(name));
         } else if (category != null && !category.isEmpty()) {
@@ -103,7 +103,7 @@ public class ProductController {
         if (userDetails == null) {
             throw new RuntimeException("User not authenticated");
         }
-        
+
         String email = userDetails.getUsername();
         return userService.getUserByEmail(email).getId();
     }

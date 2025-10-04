@@ -1,0 +1,78 @@
+<main class="products-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Nos Produits</h1>
+      <p>Découvrez notre sélection de produits de qualité</p>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="filterProducts()"
+          placeholder="Rechercher un produit..."
+          class="search-input"
+        >
+      </div>
+      
+      <select 
+        [(ngModel)]="selectedCategory" 
+        (change)="filterProducts()"
+        class="filter-select"
+      >
+        <option value="">Toutes les catégories</option>
+        <option *ngFor="let category of getCategories()" [value]="category">{{ category }}</option>
+      </select>
+
+      <select 
+        [(ngModel)]="selectedCity" 
+        (change)="filterProducts()"
+        class="filter-select"
+      >
+        <option value="">Toutes les villes</option>
+        <option *ngFor="let city of getCities()" [value]="city">{{ city }}</option>
+      </select>
+    </div>
+
+    <!-- Liste des produits -->
+    <div class="loading" *ngIf="loading">
+      <p>Chargement des produits...</p>
+    </div>
+
+    <div class="products-grid" *ngIf="!loading && filteredProducts.length > 0">
+      <div class="product-card" *ngFor="let product of filteredProducts" (click)="viewProduct(product.id)">
+        <div class="product-image">
+          <img [src]="product.imageUrl || '/assets/placeholder-product.jpg'" [alt]="product.name">
+          <div class="product-badge" [class.low-stock]="product.quantity < 10">
+            {{ product.quantity }} en stock
+          </div>
+        </div>
+        
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="product-category">{{ product.category }}</p>
+          <p class="product-description">{{ product.description | truncate:100 }}</p>
+          
+          <div class="product-meta">
+            <span class="product-price">{{ product.price | currency:'EUR' }}</span>
+            <span class="product-store">{{ product.storeName }}</span>
+          </div>
+          
+          <p class="product-brand" *ngIf="product.brand">{{ product.brand }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && filteredProducts.length === 0">
+      <h3>Aucun produit trouvé</h3>
+      <p *ngIf="searchTerm || selectedCategory || selectedCity">
+        Aucun produit ne correspond à vos critères de recherche.
+      </p>
+      <p *ngIf="!searchTerm && !selectedCategory && !selectedCity">
+        Aucun produit n'est disponible pour le moment.
+      </p>
+    </div>
+  </div>
+</main>

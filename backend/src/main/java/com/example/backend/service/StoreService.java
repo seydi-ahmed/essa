@@ -42,7 +42,8 @@ public class StoreService {
 
     public HardwareStore updateStore(Long id, HardwareStore storeDetails, Long ownerId) {
         HardwareStore store = storeRepository.findByIdAndOwnerId(id, ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + id + " for owner: " + ownerId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Store not found with id: " + id + " for owner: " + ownerId));
 
         store.setName(storeDetails.getName());
         store.setAddress(storeDetails.getAddress());
@@ -55,12 +56,24 @@ public class StoreService {
 
     public void deleteStore(Long id, Long ownerId) {
         HardwareStore store = storeRepository.findByIdAndOwnerId(id, ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + id + " for owner: " + ownerId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Store not found with id: " + id + " for owner: " + ownerId));
         storeRepository.delete(store);
     }
 
     public HardwareStore getStoreByIdAndOwner(Long id, Long ownerId) {
         return storeRepository.findByIdAndOwnerId(id, ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + id + " for owner: " + ownerId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Store not found with id: " + id + " for owner: " + ownerId));
+    }
+
+    public HardwareStore getStoreWithProducts(Long id) {
+        HardwareStore store = storeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + id));
+
+        // Force le chargement des produits
+        store.getProducts().size(); // Cette ligne force le chargement LAZY
+
+        return store;
     }
 }

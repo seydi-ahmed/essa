@@ -1,0 +1,67 @@
+<main class="product-details-page">
+  <div class="container">
+    <!-- Bouton retour -->
+    <button (click)="goBack()" class="back-btn">
+      ← Retour aux produits
+    </button>
+
+    <div class="loading" *ngIf="loading">
+      <p>Chargement...</p>
+    </div>
+
+    <div *ngIf="!loading && product" class="product-details">
+      <div class="product-layout">
+        <!-- Image du produit -->
+        <div class="product-image-section">
+          <div class="product-image">
+            <img [src]="product.imageUrl || '/assets/placeholder-product.jpg'" [alt]="product.name">
+          </div>
+        </div>
+
+        <!-- Informations du produit -->
+        <div class="product-info-section">
+          <div class="product-header">
+            <h1>{{ product.name }}</h1>
+            <div class="product-category">{{ product.category }}</div>
+          </div>
+
+          <p class="product-description">{{ product.description }}</p>
+
+          <div class="product-price-section">
+            <div class="price">{{ product.price | currency:'EUR' }}</div>
+            <div class="stock" [class.low-stock]="product.quantity < 10" [class.out-of-stock]="product.quantity === 0">
+              {{ product.quantity === 0 ? 'Rupture de stock' : product.quantity + ' en stock' }}
+            </div>
+          </div>
+
+          <div class="product-meta">
+            <div class="meta-item" *ngIf="product.brand">
+              <strong>Marque:</strong>
+              <span>{{ product.brand }}</span>
+            </div>
+            <div class="meta-item">
+              <strong>Magasin:</strong>
+              <span (click)="viewStore(product.storeId)" class="store-link">{{ product.storeName }}</span>
+            </div>
+            <div class="meta-item">
+              <strong>Ajouté le:</strong>
+              <span>{{ product.createdAt | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+
+          <div class="product-actions">
+            <button class="btn btn-primary btn-large" [disabled]="product.quantity === 0">
+              {{ product.quantity === 0 ? 'Rupture de stock' : 'Contacter le magasin' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-state" *ngIf="!loading && !product">
+      <h3>Produit non trouvé</h3>
+      <p>Le produit que vous recherchez n'existe pas.</p>
+      <button (click)="goBack()" class="btn btn-primary">Retour aux produits</button>
+    </div>
+  </div>
+</main>

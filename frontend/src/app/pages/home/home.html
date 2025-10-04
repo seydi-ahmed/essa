@@ -1,0 +1,58 @@
+<main class="home">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Bienvenue sur Quincaillerie</h1>
+        <p class="hero-subtitle">Découvrez les meilleures quincailleries et produits près de chez vous</p>
+        <div class="hero-actions">
+          <a routerLink="/stores" class="btn btn-primary btn-large">Voir les magasins</a>
+          <a routerLink="/products" class="btn btn-outline btn-large">Voir les produits</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Stores -->
+  <section class="section">
+    <div class="container">
+      <h2>Magasins à la une</h2>
+      <div class="stores-grid" *ngIf="!loading && featuredStores.length > 0">
+        <div class="store-card" *ngFor="let store of featuredStores" [routerLink]="['/stores', store.id]">
+          <div class="store-info">
+            <h3>{{ store.name }}</h3>
+            <p class="store-address">{{ store.address }}, {{ store.city }}</p>
+            <p class="store-phone">{{ store.phone }}</p>
+            <p class="store-description">{{ store.description }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="!loading && featuredStores.length === 0">
+        <p>Aucun magasin disponible pour le moment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2>Produits populaires</h2>
+      <div class="products-grid" *ngIf="!loading && featuredProducts.length > 0">
+        <div class="product-card" *ngFor="let product of featuredProducts" [routerLink]="['/products', product.id]">
+          <div class="product-image">
+            <img [src]="product.imageUrl || '/assets/placeholder-product.jpg'" [alt]="product.name">
+          </div>
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="product-category">{{ product.category }}</p>
+            <p class="product-price">{{ product.price | currency:'EUR' }}</p>
+            <p class="product-store">{{ product.storeName }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="!loading && featuredProducts.length === 0">
+        <p>Aucun produit disponible pour le moment.</p>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.UserDashboardDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.entity.User;
 import com.example.backend.exception.ResourceNotFoundException;
@@ -7,15 +8,19 @@ import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StoreService storeService;
+    private final ProductService productService;
 
     public UserDto createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -41,17 +46,13 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto updateUser(Long id, User userDetails) {
+    public UserDto updateUser(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
-        user.setFirstName(userDetails.getFirstName());
-        user.setLastName(userDetails.getLastName());
-        user.setPhone(userDetails.getPhone());
-        
-        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-        }
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhone(userDto.getPhone());
 
         User updatedUser = userRepository.save(user);
         return convertToDto(updatedUser);
@@ -65,6 +66,23 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public UserDashboardDto getUserDashboard(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        
+        Long userId = user.getId();
+        var userStores = storeService.getStoresByOwner(userId);
+        var userProducts = productService.getProductsByOwner(userId);
+
+        return UserDashboardDto.builder()
+                .user(convertToDto(user))
+                .stores(userStores)
+                .products(userProducts)
+                .totalStores(userStores.size())
+                .totalProducts(userProducts.size())
+                .build();
     }
 
     private UserDto convertToDto(User user) {

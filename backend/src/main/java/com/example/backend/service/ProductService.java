@@ -20,7 +20,8 @@ public class ProductService {
 
     public ProductDto createProduct(Product product, Long storeId, Long ownerId) {
         HardwareStore store = storeRepository.findByIdAndOwnerId(storeId, ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId + " for owner: " + ownerId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Store not found with id: " + storeId + " for owner: " + ownerId));
         product.setStore(store);
         Product savedProduct = productRepository.save(product);
         return convertToDto(savedProduct);
@@ -70,7 +71,8 @@ public class ProductService {
 
     public ProductDto updateProduct(Long id, Product productDetails, Long ownerId) {
         Product product = productRepository.findByIdAndStoreOwnerId(id, ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id + " for owner: " + ownerId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Product not found with id: " + id + " for owner: " + ownerId));
 
         product.setName(productDetails.getName());
         product.setDescription(productDetails.getDescription());
@@ -86,7 +88,8 @@ public class ProductService {
 
     public void deleteProduct(Long id, Long ownerId) {
         Product product = productRepository.findByIdAndStoreOwnerId(id, ownerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id + " for owner: " + ownerId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Product not found with id: " + id + " for owner: " + ownerId));
         productRepository.delete(product);
     }
 

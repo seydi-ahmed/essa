@@ -1,0 +1,100 @@
+<main class="register-page">
+  <div class="container">
+    <div class="register-card">
+      <div class="register-header">
+        <h1>Inscription</h1>
+        <p>Créez votre compte propriétaire</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="register-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">Prénom</label>
+            <input
+              type="text"
+              id="firstName"
+              [(ngModel)]="user.firstName"
+              name="firstName"
+              required
+              placeholder="Votre prénom"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Nom</label>
+            <input
+              type="text"
+              id="lastName"
+              [(ngModel)]="user.lastName"
+              name="lastName"
+              required
+              placeholder="Votre nom"
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="user.email"
+            name="email"
+            required
+            placeholder="votre@email.com"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Téléphone</label>
+          <input
+            type="tel"
+            id="phone"
+            [(ngModel)]="user.phone"
+            name="phone"
+            required
+            placeholder="Votre numéro de téléphone"
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input
+              type="password"
+              id="password"
+              [(ngModel)]="user.password"
+              name="password"
+              required
+              placeholder="Votre mot de passe"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirmer le mot de passe</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              [(ngModel)]="user.confirmPassword"
+              name="confirmPassword"
+              required
+              placeholder="Confirmez votre mot de passe"
+            >
+          </div>
+        </div>
+
+        <div class="error-message" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large" [disabled]="loading">
+          {{ loading ? 'Inscription...' : 'Créer mon compte' }}
+        </button>
+      </form>
+
+      <div class="register-footer">
+        <p>Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,175 @@
+.stores-page {
+  padding: 2rem 0;
+  min-height: 80vh;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+
+  .search-box {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+  }
+
+  .city-filter {
+    padding: 0.75rem 1rem;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    min-width: 200px;
+
+    &:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+  }
+}
+
+.stores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.store-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #e9ecef;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #3498db;
+  }
+
+  .store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    h3 {
+      color: #2c3e50;
+      margin: 0;
+      flex: 1;
+    }
+
+    .store-city {
+      background: #3498db;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+
+  .store-info {
+    margin-bottom: 1.5rem;
+
+    p {
+      margin: 0.5rem 0;
+      color: #5d6d7e;
+    }
+
+    .store-address, .store-phone {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .store-description {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #7f8c8d;
+    }
+  }
+
+  .store-actions {
+    text-align: center;
+  }
+}
+
+.loading, .empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #7f8c8d;
+
+  h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+}
+
+@media (max-width: 768px) {
+  .stores-page {
+    padding: 1rem 0;
+  }
+
+  .filters {
+    flex-direction: column;
+
+    .search-box {
+      min-width: auto;
+    }
+  }
+
+  .stores-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .store-card {
+    .store-header {
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .store-city {
+        align-self: flex-start;
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+<main class="stores-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Nos Magasins</h1>
+      <p>Découvrez nos quincailleries partenaires</p>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="filterStores()"
+          placeholder="Rechercher un magasin..."
+          class="search-input"
+        >
+      </div>
+      
+      <select 
+        [(ngModel)]="selectedCity" 
+        (change)="filterStores()"
+        class="city-filter"
+      >
+        <option value="">Toutes les villes</option>
+        <option *ngFor="let city of getCities()" [value]="city">{{ city }}</option>
+      </select>
+    </div>
+
+    <!-- Liste des magasins -->
+    <div class="loading" *ngIf="loading">
+      <p>Chargement des magasins...</p>
+    </div>
+
+    <div class="stores-grid" *ngIf="!loading && filteredStores.length > 0">
+      <div class="store-card" *ngFor="let store of filteredStores" (click)="viewStore(store.id)">
+        <div class="store-header">
+          <h3>{{ store.name }}</h3>
+          <span class="store-city">{{ store.city }}</span>
+        </div>
+        
+        <div class="store-info">
+          <p class="store-address">📍 {{ store.address }}</p>
+          <p class="store-phone">📞 {{ store.phone }}</p>
+          <p class="store-description">{{ store.description }}</p>
+        </div>
+        
+        <div class="store-actions">
+          <button class="btn btn-primary">Voir les détails</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && filteredStores.length === 0">
+      <h3>Aucun magasin trouvé</h3>
+      <p *ngIf="searchTerm || selectedCity">
+        Aucun magasin ne correspond à vos critères de recherche.
+      </p>
+      <p *ngIf="!searchTerm && !selectedCity">
+        Aucun magasin n'est disponible pour le moment.
+      </p>
+    </div>
+  </div>
+</main>

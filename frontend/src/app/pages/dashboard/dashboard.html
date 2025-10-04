@@ -1,0 +1,115 @@
+<main class="dashboard-page">
+  <div class="container">
+    <div class="dashboard-header">
+      <h1>Tableau de Bord</h1>
+      <p>Gérez vos magasins et produits</p>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <p>Chargement de vos données...</p>
+    </div>
+
+    <div *ngIf="!loading" class="dashboard-content">
+      <!-- Statistiques -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🏪</div>
+          <div class="stat-info">
+            <h3>{{ stats.totalStores }}</h3>
+            <p>Magasins</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-info">
+            <h3>{{ stats.totalProducts }}</h3>
+            <p>Produits</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-info">
+            <h3>{{ stats.lowStockProducts }}</h3>
+            <p>Stock faible</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions rapides -->
+      <div class="quick-actions">
+        <h2>Actions rapides</h2>
+        <div class="actions-grid">
+          <button (click)="createStore()" class="action-btn">
+            <span class="action-icon">➕</span>
+            <span>Nouveau magasin</span>
+          </button>
+          <button (click)="createProduct()" class="action-btn">
+            <span class="action-icon">📦</span>
+            <span>Nouveau produit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mes magasins -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>Mes Magasins</h2>
+          <span class="section-count">{{ stores.length }}</span>
+        </div>
+
+        <div class="stores-list" *ngIf="stores.length > 0">
+          <div class="store-item" *ngFor="let store of stores" (click)="viewStore(store.id)">
+            <div class="store-info">
+              <h3>{{ store.name }}</h3>
+              <p class="store-location">{{ store.address }}, {{ store.city }}</p>
+              <p class="store-phone">{{ store.phone }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="stores.length === 0">
+          <p>Vous n'avez pas encore de magasins.</p>
+          <button (click)="createStore()" class="btn btn-primary">Créer un magasin</button>
+        </div>
+      </section>
+
+      <!-- Mes produits -->
+      <section class="dashboard-section">
+        <div class="section-header">
+          <h2>Mes Produits</h2>
+          <span class="section-count">{{ products.length }}</span>
+        </div>
+
+        <div class="products-list" *ngIf="products.length > 0">
+          <div
+            class="product-item"
+            *ngFor="let product of products"
+            (click)="viewProduct(product.id)"
+          >
+            <div class="product-info">
+              <h3>{{ product.name }}</h3>
+              <p class="product-category">{{ product.category }}</p>
+              <p class="product-description">{{ product.description | truncate : 80 }}</p>
+            </div>
+            <div class="product-meta">
+              <span class="product-price">{{ product.price | currency : 'EUR' }}</span>
+              <span
+                [class.low-stock]="product.quantity < 10"
+                [class.out-of-stock]="product.quantity === 0"
+              >
+                {{ product.quantity === 0 ? 'Rupture' : product.quantity + ' en stock' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="products.length === 0">
+          <p>Vous n'avez pas encore de produits.</p>
+          <button (click)="createProduct()" class="btn btn-primary">Créer un produit</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

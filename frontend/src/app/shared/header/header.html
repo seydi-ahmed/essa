@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a routerLink="/">🛠️ Quincaillerie</a>
+    </div>
+    
+    <nav class="nav" [class.active]="isMenuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+      <a routerLink="/stores" routerLinkActive="active">Magasins</a>
+      <a routerLink="/products" routerLinkActive="active">Produits</a>
+      
+      <div class="auth-section" *ngIf="isBrowser() && !authService.isLoggedIn()">
+        <a routerLink="/login" class="btn btn-outline">Connexion</a>
+        <a routerLink="/register" class="btn btn-primary">Inscription</a>
+      </div>
+      
+      <div class="user-section" *ngIf="isBrowser() && authService.isLoggedIn()">
+        <a routerLink="/dashboard" class="btn btn-outline">Dashboard</a>
+        <button (click)="logout()" class="btn btn-secondary">Déconnexion</button>
+      </div>
+    </nav>
+    
+    <button class="menu-toggle" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>

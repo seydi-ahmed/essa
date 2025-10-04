@@ -1,0 +1,48 @@
+<main class="login-page">
+  <div class="container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Connexion</h1>
+        <p>Accédez à votre espace personnel</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="credentials.email"
+            name="email"
+            required
+            placeholder="votre@email.com"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="credentials.password"
+            name="password"
+            required
+            placeholder="Votre mot de passe"
+          >
+        </div>
+
+        <div class="error-message" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large" [disabled]="loading">
+          {{ loading ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Pas encore de compte ? <a routerLink="/register">Créer un compte</a></p>
+      </div>
+    </div>
+  </div>
+</main>

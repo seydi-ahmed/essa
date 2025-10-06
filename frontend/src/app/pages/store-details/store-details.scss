@@ -222,3 +222,80 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Formulaire */
+.store-form {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .form-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+
+    .form-control {
+      padding: 0.75rem 1rem;
+      border: 1px solid #dcdfe6;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+
+      &:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+    }
+
+    textarea.form-control {
+      resize: vertical;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.btn-primary {
+        background: #3498db;
+        color: white;
+        border: none;
+
+        &:hover {
+          background: #2980b9;
+        }
+      }
+
+      &.btn-secondary {
+        background: #ecf0f1;
+        border: none;
+        color: #2c3e50;
+
+        &:hover {
+          background: #dcdde1;
+        }
+      }
+    }
+  }
+}

@@ -6,15 +6,25 @@ import { HardwareStore } from '../../models/store.model';
 import { ProductDto } from '../../models/product.model';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-store-details',
-  imports: [NgIf, NgFor, CurrencyPipe, FormsModule],
+  imports: [NgIf, NgFor, CurrencyPipe, FormsModule, RouterLink],
   templateUrl: './store-details.html',
   styleUrls: ['./store-details.scss'],
 })
 export class StoreDetails implements OnInit {
-  store: HardwareStore | null = null;
+  // store: HardwareStore | null = null;
+  store: HardwareStore = {
+    id: 0,
+    name: '',
+    address: '',
+    city: '',
+    phone: '',
+    description: '',
+  };
+
   products: ProductDto[] = [];
   loading = true;
   storeId!: number;
@@ -28,8 +38,9 @@ export class StoreDetails implements OnInit {
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
+    const url = this.route.snapshot.routeConfig?.path;
 
-    if (idParam === 'new') {
+    if (url === 'stores/new') {
       // Mode création
       this.store = { id: 0, name: '', address: '', city: '', phone: '', description: '' };
       this.loading = false;
@@ -37,6 +48,8 @@ export class StoreDetails implements OnInit {
       this.storeId = Number(idParam);
       this.loadStoreDetails();
       this.loadStoreProducts();
+    } else {
+      this.loading = false;
     }
   }
 

@@ -1,85 +1,134 @@
 <main class="store-details-page">
   <div class="container">
+    <!-- Bouton retour -->
     <button class="back-btn" (click)="goBack()">← Retour</button>
 
-    <!-- Affichage en cours de chargement -->
+    <!-- Mode chargement -->
     <div class="loading" *ngIf="loading">
       <p>Chargement...</p>
     </div>
 
-    <!-- Formulaire de création / édition -->
-    <div *ngIf="!loading && store && store.id === 0" class="store-form">
-      <h1>Créer un nouveau magasin</h1>
-      <form (ngSubmit)="saveStore()" #storeForm="ngForm">
+    <!-- Mode formulaire (nouveau ou édition) -->
+    <div *ngIf="!loading && store?.id === 0" class="store-form">
+      <div class="store-header">
+        <h1>Créer un magasin</h1>
+        <p>Remplissez les informations ci-dessous</p>
+      </div>
+
+      <form (ngSubmit)="saveStore()" #storeForm="ngForm" class="form-card">
         <div class="form-group">
-          <label>Nom</label>
-          <input type="text" [(ngModel)]="store.name" name="name" required />
+          <label for="name">Nom du magasin</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="store.name"
+            class="form-control"
+            required
+          />
         </div>
 
         <div class="form-group">
-          <label>Adresse</label>
-          <input type="text" [(ngModel)]="store.address" name="address" required />
+          <label for="address">Adresse</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            [(ngModel)]="store.address"
+            class="form-control"
+            required
+          />
         </div>
 
         <div class="form-group">
-          <label>Ville</label>
-          <input type="text" [(ngModel)]="store.city" name="city" required />
+          <label for="city">Ville</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            [(ngModel)]="store.city"
+            class="form-control"
+            required
+          />
         </div>
 
         <div class="form-group">
-          <label>Téléphone</label>
-          <input type="text" [(ngModel)]="store.phone" name="phone" />
+          <label for="phone">Téléphone</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            [(ngModel)]="store.phone"
+            class="form-control"
+          />
         </div>
 
         <div class="form-group">
-          <label>Description</label>
-          <textarea [(ngModel)]="store.description" name="description"></textarea>
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="store.description"
+            class="form-control"
+            rows="4"
+          ></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+          <button type="button" class="btn btn-secondary" (click)="goBack()">Annuler</button>
+        </div>
       </form>
     </div>
 
-    <!-- Vue détail d’un magasin existant -->
+    <!-- Mode détails -->
     <div *ngIf="!loading && store && store.id !== 0" class="store-details">
       <div class="store-header">
         <h1>{{ store.name }}</h1>
         <div class="store-meta">
-          <span>{{ store.city }}</span>
-          <span>{{ store.phone }}</span>
+          <span>📍 {{ store.city }}</span>
+          <span>☎️ {{ store.phone }}</span>
         </div>
         <p class="store-address">{{ store.address }}</p>
         <p class="store-description">{{ store.description }}</p>
       </div>
 
-      <div class="products-section">
+      <!-- Produits -->
+      <section class="products-section">
         <h2>Produits du magasin</h2>
 
-        <div class="products-grid" *ngIf="products.length > 0">
-          <div class="product-card" *ngFor="let product of products" (click)="viewProduct(product.id)">
-            <div class="product-image">
-              <img [src]="product.imageUrl || '/assets/placeholder-product.jpg'" [alt]="product.name" />
-            </div>
+        <div *ngIf="products.length > 0" class="products-grid">
+          <div
+            class="product-card"
+            *ngFor="let product of products"
+            (click)="viewProduct(product.id)"
+          >
             <div class="product-info">
               <h3>{{ product.name }}</h3>
               <p class="product-category">{{ product.category }}</p>
               <p class="product-description">{{ product.description }}</p>
+
               <div class="product-meta">
-                <span class="product-price">{{ product.price | currency:'EUR' }}</span>
-                <span class="product-quantity" [class.low-stock]="product.quantity < 10">
-                  {{ product.quantity }} en stock
+                <span class="product-price">{{ product.price | currency : 'EUR' }}</span>
+                <span
+                  class="product-quantity"
+                  [class.low-stock]="product.quantity < 10"
+                  [class.out-of-stock]="product.quantity === 0"
+                >
+                  {{ product.quantity === 0 ? 'Rupture' : product.quantity + ' en stock' }}
                 </span>
               </div>
-              <p class="product-brand" *ngIf="product.brand">{{ product.brand }}</p>
+              <p class="product-brand">{{ product.brand }}</p>
             </div>
           </div>
         </div>
 
-        <div class="empty-state" *ngIf="products.length === 0">
-          <h3>Aucun produit trouvé</h3>
-          <p>Ce magasin n'a pas encore de produits enregistrés.</p>
+        <div *ngIf="products.length === 0" class="empty-state">
+          <p>Aucun produit pour ce magasin.</p>
+          <!-- <button class="btn btn-primary" (click)="viewProduct(0)">➕ Ajouter un produit</button> -->
+          <a [routerLink]="['/products', 'new']" class="btn btn-primary"> Ajouter un produit </a>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </main>
